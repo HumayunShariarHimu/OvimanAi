@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>OvimanAi — Two Hearts One Solution</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Rajdhani:wght@400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+:root{
+  --c:#00f5ff;--m:#ff00e5;--g:#00ff9d;--y:#ffe500;--r:#ff2d55;--b:#4d8dff;
+  --bg0:#020509;--bg1:#050d14;--bg2:#071219;--bg3:#0a1a26;
+  --glW:rgba(255,255,255,0.04);--glW2:rgba(255,255,255,0.07);
+  --bd:rgba(0,245,255,0.15);--bd2:rgba(0,245,255,0.3);
+  --bdM:rgba(255,0,229,0.15);--bdM2:rgba(255,0,229,0.3);
+  --txt:#d0eef8;--txt2:#5a8a9a;--txt3:#3a6070;
+  --fbn:'Hind Siliguri',sans-serif;--fhd:'Rajdhani',sans-serif;--fmn:'JetBrains Mono',monospace;
+  --rad:18px;--rads:10px;--radl:24px;
+}
+body{background:var(--bg0);color:var(--txt);font-family:var(--fbn);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* BG */
+.bgs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(90px);animation:orbF 14s ease-in-out infinite;opacity:.11}
+.o1{width:600px;height:600px;background:var(--c);top:-15%;left:-15%;animation-delay:0s}
+.o2{width:500px;height:500px;background:var(--m);bottom:-15%;right:-15%;animation-delay:-5s}
+.o3{width:350px;height:350px;background:var(--g);top:40%;left:55%;animation-delay:-9s;opacity:.06}
+@keyframes orbF{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(25px,-18px) scale(1.04)}66%{transform:translate(-18px,25px) scale(.97)}}
+.bgrid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,245,255,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(0,245,255,.022) 1px,transparent 1px);background-size:48px 48px;animation:gridM 45s linear infinite}
+@keyframes gridM{to{background-position:48px 48px}}
+.scanl{position:fixed;inset:0;pointer-events:none;z-index:999;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.038) 3px,rgba(0,0,0,.038) 4px)}
+
+/* WRAP */
+.wrap{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:0 16px 80px}
+
+/* HEADER */
+.hdr{text-align:center;padding:50px 20px 32px;position:relative}
+.logo-w{display:inline-flex;align-items:center;justify-content:center;position:relative;margin-bottom:22px}
+.logo-bg{width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,rgba(0,245,255,.1),rgba(255,0,229,.1));border:1px solid rgba(0,245,255,.2);display:flex;align-items:center;justify-content:center;font-size:38px;box-shadow:0 0 40px rgba(0,245,255,.15),inset 0 0 30px rgba(0,0,0,.5);animation:lgP 4s ease-in-out infinite;position:relative}
+@keyframes lgP{0%,100%{box-shadow:0 0 40px rgba(0,245,255,.15),inset 0 0 30px rgba(0,0,0,.5)}50%{box-shadow:0 0 70px rgba(0,245,255,.25),0 0 30px rgba(255,0,229,.15),inset 0 0 30px rgba(0,0,0,.5)}}
+.lr1,.lr2,.lr3{position:absolute;border-radius:50%;border:1px solid}
+.lr1{inset:-13px;border-color:rgba(0,245,255,.2);animation:sp 8s linear infinite}
+.lr2{inset:-24px;border-color:rgba(255,0,229,.12);border-style:dashed;animation:sp 13s linear infinite reverse}
+.lr3{inset:-38px;border-color:rgba(0,255,157,.07);animation:sp 20s linear infinite}
+.ldot{position:absolute;width:6px;height:6px;border-radius:50%;background:var(--c);top:-16px;left:50%;margin-left:-3px;box-shadow:0 0 8px var(--c);transform-origin:3px 47px;animation:sp 8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.appname{font-family:var(--fhd);font-size:clamp(2.4rem,7vw,4.2rem);font-weight:700;letter-spacing:.15em;text-transform:;background:linear-gradient(90deg,var(--c),var(--m),var(--c));background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimr 5s linear infinite;line-height:1;margin-bottom:10px}
+@keyframes shimr{to{background-position:200% center}}
+.appsub{font-family:var(--fmn);font-size:clamp(.72rem,2vw,.85rem);color:var(--txt2);letter-spacing:.2em;text-transform:;display:flex;align-items:center;justify-content:center;gap:10px}
+.sdot{width:5px;height:5px;border-radius:50%;background:var(--g);box-shadow:0 0 6px var(--g);animation:blnk 1.5s step-end infinite}
+@keyframes blnk{50%{opacity:0}}
+.hdrline{width:100%;height:1px;background:linear-gradient(90deg,transparent,var(--c),var(--m),var(--c),transparent);margin-top:28px;opacity:.35}
+
+/* STATUS */
+.status{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:var(--glW);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--bd);border-radius:var(--rads);padding:12px 18px;margin-bottom:20px;font-family:var(--fmn);font-size:.72rem}
+.sl{display:flex;align-items:center;gap:8px}
+.pdot{width:8px;height:8px;border-radius:50%;background:var(--g);box-shadow:0 0 10px var(--g);position:relative}
+.pdot::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:1px solid var(--g);opacity:.4;animation:pingo 2s ease-out infinite}
+@keyframes pingo{0%{transform:scale(1);opacity:.4}100%{transform:scale(2.5);opacity:0}}
+.sonl{color:var(--g);font-weight:500;letter-spacing:.1em}
+.sr{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.si{color:var(--txt2)}.si strong{color:var(--c)}
+.btncfg{background:none;border:1px solid var(--bd);border-radius:6px;color:var(--c);font-family:var(--fmn);font-size:.72rem;padding:5px 12px;cursor:pointer;transition:all .2s;letter-spacing:.08em}
+.btncfg:hover{background:rgba(0,245,255,.08);border-color:var(--bd2)}
+
+/* API WARN */
+.apiwarn{display:none;align-items:center;gap:12px;background:rgba(255,229,0,.05);border:1px solid rgba(255,229,0,.2);border-radius:var(--rads);padding:14px 18px;margin-bottom:20px;cursor:pointer;transition:all .2s;font-size:.88rem}
+.apiwarn:hover{background:rgba(255,229,0,.09)}
+.apiwarn .wt{flex:1;color:var(--y)}
+.apiwarn .wa{font-family:var(--fmn);font-size:.7rem;color:var(--y);opacity:.6;white-space:nowrap}
+
+/* GLASS CARD */
+.gc{background:var(--glW);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--bd);border-radius:var(--rad);position:relative;overflow:hidden;transition:border-color .3s,box-shadow .3s}
+.gc::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,245,255,.4),transparent)}
+.gc:hover{border-color:var(--bd2);box-shadow:0 0 32px rgba(0,245,255,.1)}
+
+/* SECTION LABEL */
+.slbl{font-family:var(--fmn);font-size:.68rem;letter-spacing:.22em;text-transform:;color:var(--txt3);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.slbl::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--bd),transparent)}
+
+/* INPUT GRID */
+.igrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:680px){.igrid{grid-template-columns:1fr}}
+
+/* PERSON CARD */
+.pcrd{padding:22px}
+.pcrd.p2{border-color:var(--bdM)}
+.pcrd.p2::after{background:linear-gradient(90deg,transparent,rgba(255,0,229,.4),transparent)}
+.pcrd.p2:hover{border-color:var(--bdM2);box-shadow:0 0 32px rgba(255,0,229,.1)}
+.ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.pid{display:flex;align-items:center;gap:12px}
+.av{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;border:2px solid var(--c);background:rgba(0,245,255,.06);box-shadow:0 0 16px rgba(0,245,255,.2);flex-shrink:0}
+.p2 .av{border-color:var(--m);background:rgba(255,0,229,.06);box-shadow:0 0 16px rgba(255,0,229,.2)}
+.pn h4{font-family:var(--fhd);font-size:1rem;font-weight:600;letter-spacing:.05em;color:var(--c);text-shadow:0 0 12px rgba(0,245,255,.5)}
+.p2 .pn h4{color:var(--m);text-shadow:0 0 12px rgba(255,0,229,.5)}
+.pn span{font-family:var(--fmn);font-size:.65rem;color:var(--txt3);letter-spacing:.12em}
+.cpill{font-family:var(--fmn);font-size:.65rem;color:var(--txt3);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:20px;padding:3px 10px}
+textarea.ptxt{width:100%;min-height:130px;background:rgba(0,0,0,.35);color:var(--txt);border:1px solid rgba(255,255,255,.07);border-radius:var(--rads);padding:14px;font-family:var(--fbn);font-size:.92rem;line-height:1.75;resize:vertical;transition:border-color .25s,box-shadow .25s;margin-bottom:14px}
+textarea.ptxt::placeholder{color:var(--txt3);opacity:.8}
+textarea.ptxt:focus{outline:none;border-color:rgba(0,245,255,.35);box-shadow:0 0 0 3px rgba(0,245,255,.06),0 0 20px rgba(0,245,255,.08)}
+.p2 textarea.ptxt:focus{border-color:rgba(255,0,229,.35);box-shadow:0 0 0 3px rgba(255,0,229,.06),0 0 20px rgba(255,0,229,.08)}
+.pbtns{display:flex;gap:8px}
+.pbtn{flex:1;padding:10px 8px;border-radius:8px;border:none;cursor:pointer;font-family:var(--fbn);font-size:.82rem;font-weight:500;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s;position:relative;overflow:hidden}
+.pbtn::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,.06);transform:translateX(-100%);transition:transform .3s}
+.pbtn:hover::before{transform:translateX(0)}
+.pvo{background:rgba(0,245,255,.08);border:1px solid rgba(0,245,255,.25);color:var(--c)}
+.pvo:hover{background:rgba(0,245,255,.14);border-color:rgba(0,245,255,.45)}
+.p2 .pvo{background:rgba(255,0,229,.08);border-color:rgba(255,0,229,.25);color:var(--m)}
+.p2 .pvo:hover{background:rgba(255,0,229,.14);border-color:rgba(255,0,229,.45)}
+.pvo.rec{background:rgba(255,45,85,.12);border-color:rgba(255,45,85,.4);color:var(--r);animation:recP .8s ease-in-out infinite}
+@keyframes recP{0%,100%{box-shadow:0 0 8px rgba(255,45,85,.3)}50%{box-shadow:0 0 20px rgba(255,45,85,.6)}}
+.pclr{flex:0 0 auto;padding:10px 14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:var(--txt3)}
+.pclr:hover{border-color:rgba(255,45,85,.4);color:var(--r)}
+
+/* RESOLVE BTN */
+.resarea{display:flex;flex-direction:column;align-items:center;gap:12px;margin:28px 0}
+.btnres{position:relative;padding:18px 64px;border:none;border-radius:16px;cursor:pointer;overflow:hidden;font-family:var(--fhd);font-size:1.05rem;font-weight:700;letter-spacing:.18em;text-transform:;color:#fff;transition:all .3s;background:transparent}
+.rsbg{position:absolute;inset:0;border-radius:16px;background:linear-gradient(135deg,rgba(0,245,255,.15),rgba(255,0,229,.15),rgba(0,245,255,.15));background-size:200% 200%;animation:bgSh 4s ease infinite}
+@keyframes bgSh{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.rsbd{position:absolute;inset:0;border-radius:16px;padding:1.5px;background:linear-gradient(135deg,var(--c),var(--m),var(--g),var(--c));background-size:300% 300%;-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:bdSh 4s ease infinite}
+@keyframes bdSh{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.rsgl{position:absolute;inset:-2px;border-radius:18px;background:linear-gradient(135deg,var(--c),var(--m));opacity:0;filter:blur(16px);transition:opacity .3s;z-index:-1}
+.btnres:hover .rsgl{opacity:.25}
+.btnres:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(0,245,255,.15),0 8px 24px rgba(255,0,229,.1)}
+.btnres:active{transform:translateY(0)}
+.btnres:disabled{opacity:.4;cursor:not-allowed;transform:none!important}
+.btnres span{position:relative;z-index:1;display:flex;align-items:center;gap:10px}
+.reshint{font-family:var(--fmn);font-size:.68rem;color:var(--txt3);letter-spacing:.1em}
+.kbd{display:inline-block;padding:2px 6px;border:1px solid var(--bd);border-radius:4px;font-size:.65rem;color:var(--txt2);background:rgba(255,255,255,.03)}
+
+/* LOADER */
+.ldr{display:none;position:fixed;inset:0;background:rgba(2,5,9,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:2000;flex-direction:column;align-items:center;justify-content:center;gap:28px}
+.ldr.on{display:flex}
+.lhex{position:relative;width:90px;height:90px;display:flex;align-items:center;justify-content:center}
+.lhr{position:absolute;inset:0;border-radius:50%;border:2px solid transparent}
+.lhr:nth-child(1){border-top-color:var(--c);border-right-color:var(--c);animation:sp 1s linear infinite}
+.lhr:nth-child(2){inset:10px;border-bottom-color:var(--m);border-left-color:var(--m);animation:sp .7s linear infinite reverse}
+.lhr:nth-child(3){inset:20px;border-top-color:var(--g);animation:sp .5s linear infinite}
+.lcore{width:20px;height:20px;border-radius:50%;background:radial-gradient(var(--c),var(--m));box-shadow:0 0 20px var(--c),0 0 40px var(--m);animation:cpulse 1s ease-in-out infinite alternate}
+@keyframes cpulse{from{transform:scale(.8)}to{transform:scale(1.2)}}
+.lmsg{font-family:var(--fmn);font-size:.85rem;color:var(--c);letter-spacing:.15em;text-align:center;max-width:280px;line-height:1.6}
+.ldots{display:flex;gap:8px}
+.ld{width:8px;height:8px;border-radius:50%;animation:ldA 1.4s ease-in-out infinite}
+.ld:nth-child(1){background:var(--c);animation-delay:0s}
+.ld:nth-child(2){background:var(--m);animation-delay:.2s}
+.ld:nth-child(3){background:var(--g);animation-delay:.4s}
+.ld:nth-child(4){background:var(--y);animation-delay:.6s}
+@keyframes ldA{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-14px);opacity:1}}
+
+/* RESULT */
+.rw{display:none;animation:riseUp .5s ease-out}
+.rw.on{display:block}
+@keyframes riseUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+/* QUICK STATS */
+.qs{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+@media(max-width:560px){.qs{grid-template-columns:repeat(2,1fr)}}
+.qsc{padding:18px 14px;text-align:center;border-radius:14px}
+.qsv{display:block;font-family:var(--fhd);font-size:1.45rem;font-weight:700;line-height:1;margin-bottom:6px;color:var(--ac);text-shadow:0 0 16px var(--ac)}
+.qsl{font-family:var(--fmn);font-size:.6rem;color:var(--txt2);letter-spacing:.1em;text-transform:}
+.q1{--ac:var(--c);border:1px solid rgba(0,245,255,.15)}
+.q2{--ac:var(--r);border:1px solid rgba(255,45,85,.15)}
+.q3{--ac:var(--y);border:1px solid rgba(255,229,0,.15)}
+.q4{--ac:var(--g);border:1px solid rgba(0,255,157,.15)}
+
+/* ANALYSIS ROW */
+.arow{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+@media(max-width:680px){.arow{grid-template-columns:1fr}}
+.acrd{padding:22px}
+.actit{font-family:var(--fmn);font-size:.68rem;letter-spacing:.18em;text-transform:;color:var(--txt3);margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.atag{border-radius:4px;padding:2px 7px;font-size:.65rem;border:1px solid rgba(0,245,255,.15);color:var(--c);background:rgba(0,245,255,.07)}
+.rbadge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,255,157,.07);border:1px solid rgba(0,255,157,.2);border-radius:24px;padding:8px 16px;font-size:.88rem;font-weight:500;color:var(--g);margin-bottom:18px}
+
+/* EMO BARS */
+.er{margin-bottom:14px}
+.et{display:flex;justify-content:space-between;margin-bottom:7px;font-size:.8rem}
+.en{color:var(--txt)}.ep{font-family:var(--fmn);font-size:.72rem;color:var(--txt2)}
+.etr{height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:visible;position:relative}
+.ef{height:100%;border-radius:3px;transition:width 1.4s cubic-bezier(.34,1.56,.64,1);position:relative}
+.ef::after{content:'';position:absolute;right:0;top:-3px;width:12px;height:12px;border-radius:50%;background:inherit;box-shadow:0 0 10px currentColor;filter:brightness(1.5)}
+
+/* TOXIC */
+.txok{display:flex;align-items:center;gap:7px;color:var(--g);font-size:.84rem}
+.txhd{font-family:var(--fmn);font-size:.7rem;color:var(--r);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.txtags{display:flex;flex-wrap:wrap;gap:6px}
+.txtag{background:rgba(255,45,85,.1);border:1px solid rgba(255,45,85,.25);color:var(--r);border-radius:20px;padding:3px 11px;font-size:.75rem;font-family:var(--fmn)}
+
+/* RATING */
+.stars{display:flex;gap:5px;margin-bottom:6px}
+.star{font-size:1.3rem;filter:grayscale(1) opacity(.22);transition:filter .2s}
+.star.on{filter:none;animation:starI .4s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes starI{from{transform:scale(0) rotate(-30deg)}to{transform:scale(1) rotate(0deg)}}
+.rtxt{font-family:var(--fmn);font-size:.7rem;color:var(--txt2)}
+
+/* AI CARD */
+.aicard{margin-bottom:20px}
+.tabs{display:flex;border-bottom:1px solid var(--bd);background:rgba(0,0,0,.2);overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:13px 18px;font-family:var(--fmn);font-size:.72rem;color:var(--txt3);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;display:flex;align-items:center;gap:6px;transition:all .2s;letter-spacing:.06em}
+.tab:hover{color:var(--c)}
+.tab.on{color:var(--c);border-bottom-color:var(--c);background:rgba(0,245,255,.04)}
+.tabbody{padding:28px;min-height:200px}
+.tp{display:none;animation:fadeQ .35s}
+.tp.on{display:block}
+@keyframes fadeQ{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.aitxt{font-size:.94rem;line-height:1.95;color:var(--txt);white-space:pre-wrap}
+.aitxt.tc::after{content:'▋';color:var(--c);animation:blnk .6s step-end infinite}
+
+/* FOLLOW-UP */
+.fcard{display:none;padding:22px;margin-bottom:20px;border-color:rgba(255,229,0,.15)}
+.fcard::after{background:linear-gradient(90deg,transparent,rgba(255,229,0,.3),transparent)}
+.fcard.on{display:block;animation:riseUp .4s ease-out}
+.flbl{font-family:var(--fmn);font-size:.68rem;color:var(--y);letter-spacing:.15em;text-transform:;margin-bottom:12px;display:flex;align-items:center;gap:7px}
+.ftxt{font-size:.94rem;line-height:1.7;color:var(--y);margin-bottom:14px;padding:12px 16px;background:rgba(255,229,0,.05);border-radius:8px;border-left:3px solid rgba(255,229,0,.3)}
+.finp{width:100%;background:rgba(0,0,0,.4);border:1px solid rgba(255,229,0,.15);border-radius:8px;padding:12px 14px;color:var(--txt);font-family:var(--fbn);font-size:.9rem;resize:none;min-height:80px;transition:border-color .25s;margin-bottom:12px}
+.finp:focus{outline:none;border-color:rgba(255,229,0,.35);box-shadow:0 0 15px rgba(255,229,0,.08)}
+.fsend{padding:10px 22px;border-radius:8px;border:none;cursor:pointer;background:rgba(255,229,0,.1);border:1px solid rgba(255,229,0,.25);color:var(--y);font-family:var(--fmn);font-size:.78rem;display:flex;align-items:center;gap:7px;transition:all .2s}
+.fsend:hover{background:rgba(255,229,0,.16)}
+
+/* TOOLBAR */
+.tbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px}
+.tbtn{padding:10px 18px;border-radius:8px;border:1px solid var(--bd);background:rgba(255,255,255,.03);color:var(--txt2);font-family:var(--fmn);font-size:.75rem;cursor:pointer;display:flex;align-items:center;gap:7px;transition:all .2s;letter-spacing:.05em}
+.tbtn:hover{border-color:var(--bd2);color:var(--c)}
+.tbtn.dng:hover{border-color:rgba(255,45,85,.4);color:var(--r)}
+@media(max-width:420px){.tbtn{flex:1;justify-content:center}}
+
+/* HISTORY */
+.hcard{padding:22px}
+.hempty{text-align:center;padding:28px;font-family:var(--fmn);font-size:.8rem;color:var(--txt3);letter-spacing:.08em}
+.hi{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.05);cursor:pointer;transition:padding-left .2s}
+.hi:last-child{border-bottom:none}
+.hi:hover{padding-left:6px}
+.hi:hover .hprev{color:var(--c)}
+.hnum{width:28px;height:28px;border-radius:50%;flex-shrink:0;background:rgba(0,245,255,.06);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:var(--fmn);font-size:.65rem;color:var(--c)}
+.hprev{flex:1;font-size:.82rem;color:var(--txt);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:color .2s}
+.hmeta{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
+.htime{font-family:var(--fmn);font-size:.62rem;color:var(--txt3)}
+.hpill{font-size:.6rem;padding:2px 8px;border-radius:10px;background:rgba(0,245,255,.06);border:1px solid rgba(0,245,255,.12);color:var(--c);font-family:var(--fmn);white-space:nowrap}
+
+/* MODAL */
+.mbg{display:none;position:fixed;inset:0;background:rgba(2,5,9,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);z-index:3000;align-items:center;justify-content:center;padding:20px}
+.mbg.on{display:flex}
+.modal{background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid var(--bd);border-radius:var(--radl);padding:32px;width:100%;max-width:460px;animation:mIn .3s cubic-bezier(.34,1.56,.64,1);position:relative;overflow:hidden}
+.modal::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--c),var(--m),transparent);opacity:.5}
+@keyframes mIn{from{opacity:0;transform:scale(.88) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.mtit{font-family:var(--fhd);font-size:1.1rem;font-weight:700;letter-spacing:.1em;color:var(--c);margin-bottom:24px;display:flex;align-items:center;gap:10px}
+.mclose{position:absolute;top:18px;right:18px;background:none;border:none;color:var(--txt3);cursor:pointer;font-size:1.1rem;padding:4px;transition:color .2s}
+.mclose:hover{color:var(--r)}
+.mfld{margin-bottom:14px}
+.mfld label{display:block;font-family:var(--fmn);font-size:.68rem;color:var(--txt3);letter-spacing:.12em;margin-bottom:7px;text-transform:}
+.mfld input,.mfld select{width:100%;padding:13px 16px;background:rgba(0,0,0,.45);border:1px solid var(--bd);border-radius:9px;color:var(--txt);font-family:var(--fmn);font-size:.85rem;transition:border-color .25s,box-shadow .25s}
+.mfld input:focus,.mfld select:focus{outline:none;border-color:var(--bd2);box-shadow:0 0 0 3px rgba(0,245,255,.06)}
+.mfld select option{background:var(--bg2)}
+.mhint{background:rgba(0,245,255,.04);border:1px solid rgba(0,245,255,.1);border-radius:8px;padding:12px 14px;font-family:var(--fmn);font-size:.72rem;color:var(--txt2);line-height:1.7;margin-bottom:20px}
+.mhint a{color:var(--c);text-decoration:none}.mhint a:hover{text-decoration:underline}
+.macts{display:flex;gap:10px}
+.bsave{flex:1;padding:14px;border:none;border-radius:10px;cursor:pointer;background:linear-gradient(135deg,var(--c),var(--m));color:#000;font-family:var(--fhd);font-size:1rem;font-weight:700;letter-spacing:.1em;transition:opacity .2s,transform .2s}
+.bsave:hover{opacity:.88;transform:translateY(-1px)}
+.bcnl{padding:14px 20px;border-radius:10px;cursor:pointer;background:transparent;border:1px solid var(--bd);color:var(--txt2);font-family:var(--fmn);font-size:.8rem;transition:all .2s}
+.bcnl:hover{border-color:rgba(255,45,85,.3);color:var(--r)}
+
+/* TOAST */
+.toastbox{position:fixed;bottom:24px;right:20px;max-width:300px;z-index:9999;pointer-events:none;display:flex;flex-direction:column;gap:8px}
+.titem{background:var(--bg3);border:1px solid var(--bd);border-radius:10px;padding:13px 18px;font-family:var(--fmn);font-size:.78rem;color:var(--txt);box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 30px rgba(0,245,255,.12);opacity:0;transform:translateX(20px);transition:all .3s;display:flex;align-items:center;gap:8px}
+.titem.show{opacity:1;transform:translateX(0)}
+.titem.hide{opacity:0;transform:translateX(20px)}
+
+/* FOOTER */
+.footer{text-align:center;padding:40px 20px 28px;position:relative;margin-top:20px}
+.footer::before{content:'';display:block;width:100%;height:1px;background:linear-gradient(90deg,transparent,var(--bd),transparent);margin-bottom:28px}
+.flogo{font-family:var(--fhd);font-size:1.4rem;font-weight:700;letter-spacing:.15em;background:linear-gradient(90deg,var(--c),var(--m));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px}
+.fcred{font-family:var(--fmn);font-size:.72rem;color:var(--txt3);letter-spacing:.08em;line-height:2}
+.fcred strong{color:var(--c);text-shadow:0 0 10px rgba(0,245,255,.3)}
+.devname{color:var(--m);font-size:.8rem;font-weight:500;text-shadow:0 0 10px rgba(255,0,229,.3);font-family:var(--fhd);letter-spacing:.08em}
+.flinks{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:16px;flex-wrap:wrap}
+.flink{font-family:var(--fmn);font-size:.62rem;color:var(--txt3);letter-spacing:.1em;text-transform:}
+.fsep{color:rgba(255,255,255,.1)}
+.fheart{display:inline-block;color:var(--r);animation:hb 1.2s ease-in-out infinite}
+@keyframes hb{0%,100%{transform:scale(1)}14%{transform:scale(1.3)}28%{transform:scale(1)}42%{transform:scale(1.2)}70%{transform:scale(1)}}
+.fver{display:inline-block;font-family:var(--fmn);font-size:.6rem;color:var(--txt3);background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:4px;padding:2px 8px;margin-top:12px}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg0)}
+::-webkit-scrollbar-thumb{background:rgba(0,245,255,.15);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(0,245,255,.3)}
+
+/* MOBILE */
+@media(max-width:480px){
+  .wrap{padding:0 12px 60px}
+  .hdr{padding:36px 12px 24px}
+  .logo-bg{width:76px;height:76px;font-size:34px}
+  .lr1{inset:-11px}.lr2{inset:-21px}.lr3{inset:-33px}
+  .ldot{top:-14px;transform-origin:3px 41px}
+  .modal{padding:22px}
+  .tab{padding:11px 12px;font-size:.68rem}
+  .tabbody{padding:18px}
+  .btnres{padding:16px 36px;font-size:.92rem}
+  .qs{grid-template-columns:repeat(2,1fr)}
+  .arow{grid-template-columns:1fr}
+  .sr{gap:10px}
+}
+</style>
+</head>
+<body>
+
+<div class="bgs">
+  <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+  <div class="bgrid"></div>
+  <div id="stars"></div>
+</div>
+<div class="scanl"></div>
+
+<!-- LOADER -->
+<div class="ldr" id="ldr">
+  <div class="lhex">
+    <div class="lhr"></div><div class="lhr"></div><div class="lhr"></div>
+    <div class="lcore"></div>
+  </div>
+  <div class="lmsg" id="lmsg">বিশ্লেষণ শুরু হচ্ছে...</div>
+  <div class="ldots"><div class="ld"></div><div class="ld"></div><div class="ld"></div><div class="ld"></div></div>
+</div>
+
+<!-- MODAL -->
+<div class="mbg" id="mbg" onclick="bgCk(event)">
+  <div class="modal">
+    <button class="mclose" onclick="closeMdl()">✕</button>
+    <div class="mtit">⚙️ API কনফিগারেশন</div>
+    <div class="mfld">
+      <label>GitHub Personal Access Token</label>
+      <input type="password" id="apiKey" placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxx">
+    </div>
+    <div class="mfld">
+      <label>AI মডেল নির্বাচন</label>
+      <select id="mdlSel">
+        <option value="gpt-4o">GPT-4o — সর্বোচ্চ মান ✦</option>
+        <option value="gpt-4o-mini">GPT-4o Mini — দ্রুত ও হালকা</option>
+        <option value="Meta-Llama-3.1-70B-Instruct">Llama 3.1 70B — ওপেন সোর্স</option>
+        <option value="Mistral-large-2407">Mistral Large</option>
+        <option value="Phi-3.5-MoE-instruct">Phi-3.5 MoE — Microsoft</option>
+      </select>
+    </div>
+    <div class="mhint">
+      🔗 Token পেতে: <a href="https://github.com/settings/tokens" target="_blank">github.com/settings/tokens</a><br>
+      → Generate new token (classic) → <strong>repo</strong> scope → Copy করুন<br><br>
+      ✅ Token শুধুমাত্র আপনার ব্রাউজারে সংরক্ষিত থাকবে।
+    </div>
+    <div class="macts">
+      <button class="bsave" onclick="saveCFG()">💾 সংরক্ষণ করুন</button>
+      <button class="bcnl" onclick="closeMdl()">বাতিল</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toastbox" id="tb"></div>
+
+<!-- MAIN -->
+<div class="wrap">
+
+  <div class="hdr">
+    <div class="logo-w">
+      <div class="logo-bg">💞<div class="ldot"></div></div>
+      <div class="lr1"></div><div class="lr2"></div><div class="lr3"></div>
+    </div>
+    <div class="appname">OvimanAi</div>
+    <div class="appsub"><div class="sdot"></div>Two Hearts One Solution<div class="sdot"></div></div>
+    <div class="hdrline"></div>
+  </div>
+
+  <div class="status">
+    <div class="sl"><div class="pdot"></div><span class="sonl">SYSTEM ONLINE</span></div>
+    <div class="sr">
+      <span class="si">মডেল: <strong id="smdl">—</strong></span>
+      <span class="si">সেশন: <strong id="scnt">0</strong></span>
+      <button class="btncfg" onclick="openMdl()">⚙ Config</button>
+    </div>
+  </div>
+
+  <div class="apiwarn" id="awarn" onclick="openMdl()">
+    <span style="font-size:1.2rem">⚠️</span>
+    <span class="wt">GitHub API Token সেট করা নেই — ক্লিক করে কনফিগার করুন</span>
+    <span class="wa">SET UP →</span>
+  </div>
+
+  <!-- INPUTS -->
+  <div style="margin:24px 0">
+    <div class="slbl">💬 উভয়ের বক্তব্য লিখুন</div>
+    <div class="igrid">
+
+      <div class="gc pcrd" id="pc1">
+        <div class="ph">
+          <div class="pid"><div class="av">🧑</div>
+            <div class="pn"><h4>ব্যক্তি ১</h4><span>PERSON / PARTY A</span></div>
+          </div>
+          <div class="cpill" id="cp1">0 অক্ষর</div>
+        </div>
+        <textarea class="ptxt" id="p1"
+          placeholder="ব্যক্তি ১ এর বক্তব্য এখানে লিখুন...&#10;&#10;কী হয়েছে, কীভাবে অনুভব করছেন বিস্তারিত বলুন।"
+          oninput="upCC(1)"></textarea>
+        <div class="pbtns">
+          <button class="pbtn pvo" id="vb1" onclick="doVoice('p1',1)">🎤 ভয়েস ইনপুট</button>
+          <button class="pbtn pclr" onclick="clr('p1',1)">✕</button>
+        </div>
+      </div>
+
+      <div class="gc pcrd p2" id="pc2">
+        <div class="ph">
+          <div class="pid"><div class="av">👩</div>
+            <div class="pn"><h4>ব্যক্তি ২</h4><span>PERSON / PARTY B</span></div>
+          </div>
+          <div class="cpill" id="cp2">0 অক্ষর</div>
+        </div>
+        <textarea class="ptxt" id="p2"
+          placeholder="ব্যক্তি ২ এর বক্তব্য এখানে লিখুন...&#10;&#10;অন্যপক্ষের দৃষ্টিভঙ্গি ও অনুভূতি বিস্তারিত লিখুন।"
+          oninput="upCC(2)"></textarea>
+        <div class="pbtns">
+          <button class="pbtn pvo" id="vb2" onclick="doVoice('p2',2)">🎤 ভয়েস ইনপুট</button>
+          <button class="pbtn pclr" onclick="clr('p2',2)">✕</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="resarea">
+    <button class="btnres" id="resBtn" onclick="solve()">
+      <div class="rsbg"></div><div class="rsbd"></div><div class="rsgl"></div>
+      <span><span>🧠</span> মীমাংসা করুন</span>
+    </button>
+    <div class="reshint"><span class="kbd">Ctrl</span> + <span class="kbd">Enter</span> কীবোর্ড শর্টকাট</div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="rw" id="rw">
+    <div class="slbl" style="margin-bottom:16px">📊 AI বিশ্লেষণ ফলাফল</div>
+
+    <div class="qs">
+      <div class="gc qsc q1"><span class="qsv" id="qRel">—</span><div class="qsl">সম্পর্ক</div></div>
+      <div class="gc qsc q2"><span class="qsv" id="qTox">0</span><div class="qsl">Toxic শব্দ</div></div>
+      <div class="gc qsc q3"><span class="qsv" id="qInt">—</span><div class="qsl">দ্বন্দ্বের মাত্রা</div></div>
+      <div class="gc qsc q4"><span class="qsv" id="qPrb">—</span><div class="qsl">সমাধান সম্ভাবনা</div></div>
+    </div>
+
+    <div class="arow">
+      <div class="gc acrd">
+        <div class="actit"><span class="atag">EMO</span> আবেগ বিশ্লেষণ</div>
+        <div id="rbw"></div>
+        <div class="er"><div class="et"><span class="en">😡 রাগ / ক্রোধ</span><span class="ep" id="epA">0%</span></div><div class="etr"><div class="ef" id="efA" style="width:0%;background:linear-gradient(90deg,#ff2d55,#ff6680)"></div></div></div>
+        <div class="er"><div class="et"><span class="en">😢 দুঃখ / কষ্ট</span><span class="ep" id="epS">0%</span></div><div class="etr"><div class="ef" id="efS" style="width:0%;background:linear-gradient(90deg,#4488ff,#66aaff)"></div></div></div>
+        <div class="er"><div class="et"><span class="en">🤔 ভুল বোঝাবুঝি</span><span class="ep" id="epM">0%</span></div><div class="etr"><div class="ef" id="efM" style="width:0%;background:linear-gradient(90deg,#ffaa00,#ffdd55)"></div></div></div>
+        <div class="er"><div class="et"><span class="en">💔 অভিমান / আঘাত</span><span class="ep" id="epG">0%</span></div><div class="etr"><div class="ef" id="efG" style="width:0%;background:linear-gradient(90deg,#aa44ff,#dd88ff)"></div></div></div>
+        <div class="er"><div class="et"><span class="en">😰 উদ্বেগ / চাপ</span><span class="ep" id="epX">0%</span></div><div class="etr"><div class="ef" id="efX" style="width:0%;background:linear-gradient(90deg,#00f5ff,#00ddcc)"></div></div></div>
+      </div>
+      <div class="gc acrd">
+        <div class="actit"><span class="atag" style="color:var(--r);border-color:rgba(255,45,85,.2);background:rgba(255,45,85,.07)">TOX</span>ভাষা পর্যবেক্ষণ</div>
+        <div id="txw"></div>
+        <div class="actit" style="margin-top:18px"><span class="atag" style="color:var(--y);border-color:rgba(255,229,0,.2);background:rgba(255,229,0,.07)">RTG</span>সমাধান রেটিং</div>
+        <div class="stars" id="strs"></div>
+        <div class="rtxt" id="rtxt"></div>
+        <div class="actit" style="margin-top:18px"><span class="atag" style="color:var(--b);border-color:rgba(77,141,255,.2);background:rgba(77,141,255,.07)">TIP</span>দ্রুত পরামর্শ</div>
+        <div id="qtip" style="font-size:.84rem;color:var(--txt2);line-height:1.7"></div>
+      </div>
+    </div>
+
+    <div class="gc aicard">
+      <div class="tabs">
+        <div class="tab on" onclick="showTab(0)">📌 সমস্যা</div>
+        <div class="tab" onclick="showTab(1)">🔍 কারণ</div>
+        <div class="tab" onclick="showTab(2)">✅ সমাধান</div>
+        <div class="tab" onclick="showTab(3)">💡 টিপস</div>
+        <div class="tab" onclick="showTab(4)">📄 পূর্ণ বিশ্লেষণ</div>
+      </div>
+      <div class="tabbody">
+        <div class="tp on" id="tp0"><div class="aitxt" id="to0">বিশ্লেষণ শুরু হয়নি...</div></div>
+        <div class="tp" id="tp1"><div class="aitxt" id="to1"></div></div>
+        <div class="tp" id="tp2"><div class="aitxt" id="to2"></div></div>
+        <div class="tp" id="tp3"><div class="aitxt" id="to3"></div></div>
+        <div class="tp" id="tp4"><div class="aitxt" id="to4"></div></div>
+      </div>
+    </div>
+
+    <div class="gc fcard" id="fcard">
+      <div class="flbl">🤖 AI ফলো-আপ প্রশ্ন</div>
+      <div class="ftxt" id="ftxt"></div>
+      <textarea class="finp" id="fans" placeholder="আপনার উত্তর এখানে লিখুন..."></textarea>
+      <button class="fsend" onclick="sendFQ()">📨 উত্তর পাঠান ও আরও পরামর্শ নিন</button>
+    </div>
+
+    <div class="tbar">
+      <button class="tbtn" onclick="cpRes()">📋 কপি করুন</button>
+      <button class="tbtn" onclick="dlRes()">💾 ডাউনলোড</button>
+      <button class="tbtn" onclick="shRes()">🔗 শেয়ার</button>
+      <button class="tbtn" onclick="prRes()">🖨️ প্রিন্ট</button>
+      <button class="tbtn dng" onclick="resetAll()">🔄 নতুন সেশন</button>
+    </div>
+  </div>
+
+  <!-- HISTORY -->
+  <div class="slbl" style="margin-top:8px">📜 সেশন ইতিহাস</div>
+  <div class="gc hcard">
+    <div id="hlist"><div class="hempty">✦ এখনো কোনো সেশন নেই ✦</div></div>
+    <div style="padding-top:14px;border-top:1px solid rgba(255,255,255,.05);margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
+      <button class="tbtn dng" onclick="clrHist()">🗑️ ইতিহাস মুছুন</button>
+      <button class="tbtn" onclick="expHist()">📤 Export করুন</button>
+    </div>
+  </div>
+
+  <div class="footer">
+  <div class="flogo">OvimanAi</div>
+  <div class="fcred">
+    Two Hearts One Solution<br>
+    <span class="dev-text">Developed By</span> 
+    <span class="devname">
+      <a href="https://github.com/HumayunShariarHimu" target="_blank">Humayun Shariar Himu</a>
+    </span>
+  </div>
+  <div class="fver">OvimanAi · All Rights Reserved</div>
+</div>
+
+<style>
+  /* ফুটার কন্টেইনার স্টাইল */
+  .footer {
+    color: #ffffff;
+    padding: 40px 20px;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-top: 2px solid #333;
+  }
+  .flogo {
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    color: #ff4757; /* লোগোর জন্য আকর্ষণীয় রঙ */
+  }
+  .fcred {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #ccc;
+    margin-bottom: 15px;
+  }
+  .dev-text {
+    font-weight: 500;
+  }
+  /* হাইপারলিংক স্টাইলিং */
+  .devname a {
+    color: #00d2d3; /* লিংকের মূল রঙ */
+    text-decoration: none;
+    font-weight: bold;
+    position: relative;
+    transition: color 0.3s ease;
+  }
+
+  /* লিংকের নিচে সুন্দর অ্যানিমেশন */
+  .devname a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -2px;
+    left: 0;
+    background-color: #ff4757;
+    transition: width 0.3s ease;
+  }
+
+  /* হোভার করলে যা হবে */
+  .devname a:hover {
+    color: #ffffff;
+  }
+
+  .devname a:hover::after {
+    width: 100%;
+  }
+
+  .fver {
+    font-size: 13px;
+    color: #777;
+    margin-top: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+</style>
+
+
+</div>
+
+<script>
+/* STARS */
+(()=>{
+  const sf=document.getElementById('stars');
+  for(let i=0;i<80;i++){
+    const s=document.createElement('div');
+    const sz=Math.random()*1.8+.5;
+    s.style.cssText=`position:absolute;border-radius:50%;background:#fff;width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;animation:blnk ${2+Math.random()*4}s step-end infinite ${Math.random()*5}s;opacity:${.1+Math.random()*.5}`;
+    sf.appendChild(s);
+  }
+})();
+
+/* CFG */
+let C={apiKey:'',model:'gpt-4o',ep:'https://models.inference.ai.azure.com/chat/completions'};
+let sc=+localStorage.getItem('ov_sc')||0;
+let LR='';
+
+function loadC(){
+  try{const s=localStorage.getItem('ov_cfg');if(s)C={...C,...JSON.parse(s)}}catch(e){}
+  upStatus();upWarn();
+}
+function saveCFG(){
+  const k=document.getElementById('apiKey').value.trim();
+  const m=document.getElementById('mdlSel').value;
+  if(!k){toast('Token খালি রাখা যাবে না','w');return}
+  C.apiKey=k;C.model=m;
+  localStorage.setItem('ov_cfg',JSON.stringify({apiKey:k,model:m}));
+  closeMdl();upStatus();upWarn();toast('কনফিগ সংরক্ষিত হয়েছে ✓','ok');
+}
+function upStatus(){
+  document.getElementById('smdl').textContent=C.model||'—';
+  document.getElementById('scnt').textContent=sc;
+}
+function upWarn(){document.getElementById('awarn').style.display=C.apiKey?'none':'flex'}
+
+/* MODAL */
+function openMdl(){
+  document.getElementById('apiKey').value=C.apiKey||'';
+  document.getElementById('mdlSel').value=C.model||'gpt-4o';
+  document.getElementById('mbg').classList.add('on');
+}
+function closeMdl(){document.getElementById('mbg').classList.remove('on')}
+function bgCk(e){if(e.target===document.getElementById('mbg'))closeMdl()}
+
+/* TOAST */
+function toast(msg,tp='info'){
+  const box=document.getElementById('tb');
+  const el=document.createElement('div');
+  el.className='titem';
+  const ico=tp==='ok'?'✅':tp==='w'?'⚠️':tp==='err'?'❌':'ℹ️';
+  el.textContent=ico+' '+msg;
+  if(tp==='ok')el.style.borderColor='rgba(0,255,157,.3)';
+  if(tp==='err')el.style.borderColor='rgba(255,45,85,.3)';
+  if(tp==='w')el.style.borderColor='rgba(255,229,0,.3)';
+  box.appendChild(el);
+  requestAnimationFrame(()=>el.classList.add('show'));
+  setTimeout(()=>{el.classList.remove('show');el.classList.add('hide');setTimeout(()=>el.remove(),350)},3200);
+}
+
+/* CC */
+function upCC(n){document.getElementById('cp'+n).textContent=document.getElementById('p'+n).value.length+' অক্ষর'}
+function clr(id,n){document.getElementById(id).value='';document.getElementById('cp'+n).textContent='0 অক্ষর'}
+
+/* VOICE */
+function doVoice(id,n){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){toast('এই ব্রাউজার ভয়েস সাপোর্ট করে না','w');return}
+  const btn=document.getElementById('vb'+n);
+  const r=new SR();r.lang='bn-BD';r.continuous=false;r.interimResults=false;
+  r.onstart=()=>{btn.classList.add('rec');btn.textContent='⏹ বলুন...'}
+  r.onresult=(e)=>{document.getElementById(id).value+=e.results[0][0].transcript+' ';upCC(n)}
+  r.onerror=()=>toast('ভয়েস ইনপুট ব্যর্থ','err');
+  r.onend=()=>{btn.classList.remove('rec');btn.textContent='🎤 ভয়েস ইনপুট'}
+  r.start();
+}
+
+/* ANALYSIS */
+const TX=['বোকা','ঘৃণা','চুপ কর','মূর্খ','অসভ্য','নষ্ট','বাজে','ফালতু','বেয়াদব','আহাম্মক','গাধা','পাগল','ছাগল','বদমাশ','নির্লজ্জ','stupid','idiot','hate','fool'];
+const RELS=[
+  ['💑 দম্পতি',['স্বামী','স্ত্রী','বিয়ে','সংসার','শ্বশুর','শাশুড়ি']],
+  ['💕 প্রেমিক-প্রেমিকা',['ভালোবাসি','প্রেম','গার্লফ্রেন্ড','বয়ফ্রেন্ড','রিলেশন']],
+  ['👫 বন্ধু',['বন্ধু','দোস্ত','ইয়ার']],
+  ['👨‍👩‍👧 পরিবার',['বাবা','মা','ভাই','বোন','আব্বু','আম্মু','চাচা']],
+  ['💼 কর্মক্ষেত্র',['অফিস','কলিগ','বস','চাকরি']],
+  ['🎓 শিক্ষা',['স্যার','ম্যাম','শিক্ষক','ছাত্র']],
+];
+const TIPS=['প্রথমে শুনুন, তারপর বলুন — সক্রিয় শ্রবণ সম্পর্কের ভিত্তি।','রাগের মুহূর্তে ৫ মিনিট বিরতি নিন, তারপর আলোচনা করুন।','"আমি মনে করি..." দিয়ে শুরু করুন, "তুমি সবসময়..." নয়।','সমস্যায় ব্যক্তির উপর নয়, পরিস্থিতির উপর ফোকাস করুন।'];
+const FQS=['এই সমস্যা কতদিন ধরে চলছে এবং আগে সমাধানের চেষ্টা করা হয়েছিল কি?','আপনার কি মনে হয় ক্ষমা করা বা ক্ষমা চাওয়া এখানে প্রয়োজনীয়?','এই সম্পর্ক থেকে আপনার সবচেয়ে বড় প্রত্যাশা কী?','পরিস্থিতি কি কখনো ভালো ছিল? সেই সময়টা কেমন ছিল?'];
+
+function dtx(t){return TX.filter(w=>t.toLowerCase().includes(w.toLowerCase()))}
+function drel(t){for(const[n,ks]of RELS)if(ks.some(k=>t.includes(k)))return n;return '🤝 সাধারণ'}
+function demo(t){
+  const wc=t.split(/\s+/).length;
+  const a=Math.min(92,18+(t.match(/রাগ|ক্ষোভ|বিরক্ত|অসহ্য|আর পারছি না|!/g)||[]).length*14+Math.floor(t.length/45));
+  const s=Math.min(92,12+(t.match(/কষ্ট|দুঃখ|ব্যথা|কাঁদি|একা|অসহায/g)||[]).length*16+Math.floor(wc/12));
+  const m=Math.min(92,10+(t.match(/কেন|বুঝি না|কিভাবে|জানি না/g)||[]).length*15+Math.floor(t.length/65));
+  const g=Math.min(92,8+(t.match(/অভিমান|আঘাত|অবহেলা|মূল্য নেই|উপেক্ষা/g)||[]).length*20+Math.floor(wc/18));
+  const x=Math.min(92,8+(t.match(/ভয়|চিন্তা|উদ্বেগ|টেনশন|অস্থির/g)||[]).length*16+Math.floor(t.length/80));
+  return{a,s,m,g,x};
+}
+function clvl(e){const avg=(e.a+e.s+e.m)/3;if(avg>=70)return['🔴','তীব্র'];if(avg>=45)return['🟠','মাঝারি'];if(avg>=22)return['🟡','হালকা'];return['🟢','মৃদু']}
+function sprob(tx,lv){const b=90-tx.length*7;const a=lv[1]==='তীব্র'?-18:lv[1]==='মাঝারি'?-8:0;return Math.max(32,Math.min(97,b+a))+'%'}
+
+function renderAnal(p1,p2){
+  const full=p1+' '+p2;
+  const tx=dtx(full),rel=drel(full),emo=demo(full),lv=clvl(emo),prob=sprob(tx,lv);
+  document.getElementById('qRel').textContent=rel.split(' ')[0]||'—';
+  document.getElementById('qTox').textContent=tx.length;
+  document.getElementById('qInt').textContent=lv[0]+lv[1];
+  document.getElementById('qPrb').textContent=prob;
+  document.getElementById('rbw').innerHTML=`<div class="rbadge">${rel}</div>`;
+  setTimeout(()=>{setBar('efA','epA',emo.a);setBar('efS','epS',emo.s);setBar('efM','epM',emo.m);setBar('efG','epG',emo.g);setBar('efX','epX',emo.x)},120);
+  const tw=document.getElementById('txw');
+  if(!tx.length)tw.innerHTML='<div class="txok">✅ বিষাক্ত ভাষা পাওয়া যায়নি</div>';
+  else tw.innerHTML=`<div class="txhd">⚠️ ${tx.length}টি শব্দ শনাক্ত:</div><div class="txtags">${tx.map(w=>`<span class="txtag">${w}</span>`).join('')}</div>`;
+  const score=Math.max(1,Math.min(5,tx.length===0?5:tx.length<=2?4:tx.length<=4?3:2));
+  const sr=document.getElementById('strs');sr.innerHTML='';
+  for(let i=1;i<=5;i++){const s=document.createElement('span');s.className='star'+(i<=score?' on':'');s.style.animationDelay=(i*.08)+'s';s.textContent='⭐';sr.appendChild(s)}
+  document.getElementById('rtxt').textContent=['','কঠিন','চ্যালেঞ্জিং','সম্ভব','বেশ সহজ','খুব সহজ'][score]+' · সম্ভাবনা '+prob;
+  document.getElementById('qtip').textContent=TIPS[Math.floor(Math.random()*TIPS.length)];
+  return{tx,rel,emo,lv,prob};
+}
+function setBar(fi,pi,v){document.getElementById(fi).style.width=v+'%';document.getElementById(pi).textContent=v+'%'}
+
+/* TABS */
+function showTab(i){
+  document.querySelectorAll('.tab').forEach((t,j)=>t.classList.toggle('on',j===i));
+  document.querySelectorAll('.tp').forEach((p,j)=>p.classList.toggle('on',j===i));
+}
+
+/* TYPEWRITER */
+function tw(el,text,sp=6,cb){
+  el.textContent='';el.classList.add('tc');let i=0;
+  const t=setInterval(()=>{
+    el.textContent+=text[i++];
+    if(i>=text.length){clearInterval(t);el.classList.remove('tc');if(cb)cb()}
+  },sp);
+}
+
+/* PARSE AI */
+function parseAI(text){
+  const S={0:'',1:'',2:'',3:''};
+  const P=[/📌[^\n]*\n+([\s\S]*?)(?=🔍|$)/i,/🔍[^\n]*\n+([\s\S]*?)(?=✅|$)/i,/✅[^\n]*\n+([\s\S]*?)(?=💡|$)/i,/💡[^\n]*\n+([\s\S]*?)$/i];
+  let ok=false;P.forEach((re,i)=>{const m=text.match(re);if(m){S[i]=m[1].trim();ok=true}});
+  if(!ok)Object.keys(S).forEach(k=>S[k]=text);
+  const H=['📌 সমস্যার সারাংশ','🔍 কারণ ও আবেগ বিশ্লেষণ','✅ সমাধান ও গাইডলাইন','💡 ভুল বোঝাবুঝি এড়ানোর টিপস'];
+  for(let i=0;i<4;i++)tw(document.getElementById('to'+i),H[i]+'\n\n'+(S[i]||text),5);
+  tw(document.getElementById('to4'),text,4);
+  LR=text;
+}
+
+/* LOADER */
+const LMS=['বক্তব্য বিশ্লেষণ করা হচ্ছে...','আবেগ মূল্যায়ন চলছে...','সমাধান তৈরি হচ্ছে...','চূড়ান্ত পরামর্শ প্রস্তুত...'];
+let LT;
+function setLdr(on,msg){
+  document.getElementById('resBtn').disabled=on;
+  const el=document.getElementById('ldr');
+  if(on){
+    el.classList.add('on');let i=0;
+    document.getElementById('lmsg').textContent=msg||LMS[0];
+    LT=setInterval(()=>{i=(i+1)%LMS.length;document.getElementById('lmsg').textContent=LMS[i]},2000);
+  }else{el.classList.remove('on');clearInterval(LT)}
+}
+
+/* SOLVE */
+async function solve(){
+  const p1=document.getElementById('p1').value.trim();
+  const p2=document.getElementById('p2').value.trim();
+  if(!p1||!p2){toast('উভয়ের বক্তব্য লিখুন','w');return}
+  if(!C.apiKey){openMdl();toast('প্রথমে API Token সেট করুন','w');return}
+  setLdr(true,'বক্তব্য বিশ্লেষণ করা হচ্ছে...');
+  const rw=document.getElementById('rw');rw.classList.add('on');
+  const st=renderAnal(p1,p2);
+  saveHist(p1,p2);sc++;localStorage.setItem('ov_sc',sc);upStatus();
+  const SYS=`তুমি একজন অত্যাধুনিক, গভীরভাবে বিশ্লেষণকারী এবং সহানুভূতিশীল কনফ্লিক্ট রেজলভার AI। সর্বদা বাংলায় উত্তর দাও। ভাষা সহজ, বিনয়ী ও শান্তিপূর্ণ। নিরপেক্ষ থেকে উভয়ের প্রতি শ্রদ্ধাশীল।
+
+এই ফরম্যাট অনুসরণ করো:
+📌 সমস্যার সারাংশ (কি?):\n[বিস্তারিত]\n\n🔍 মূল কারণ ও আবেগ বিশ্লেষণ (কেন?):\n[বিস্তারিত]\n\n✅ সমাধান ও গাইডলাইন (কিভাবে?):\n[বিস্তারিত]\n\n💡 ভুল বোঝাবুঝি ও দ্বন্দ্ব এড়ানোর টিপস:\n[বিস্তারিত]`;
+  const USR=`🧑‍💬 ব্যক্তি ১: "${p1}"\n\n👩‍💬 ব্যক্তি ২: "${p2}"\n\nসম্পর্ক: ${st.rel} | দ্বন্দ্বের মাত্রা: ${st.lv[0]+st.lv[1]}\n\nবিস্তারিত বিশ্লেষণ ও মানবিক সমাধান দাও।`;
+  try{
+    setLdr(true,'AI সমাধান তৈরি করছে...');
+    const res=await fetch(C.ep,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+C.apiKey},body:JSON.stringify({model:C.model,messages:[{role:'system',content:SYS},{role:'user',content:USR}],max_tokens:2048,temperature:.72})});
+    if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.error?.message||`HTTP ${res.status}`)}
+    const data=await res.json();
+    const text=data.choices?.[0]?.message?.content||'কোনো উত্তর পাওয়া যায়নি।';
+    setLdr(false);parseAI(text);showFQ();
+    rw.scrollIntoView({behavior:'smooth',block:'start'});
+    toast('বিশ্লেষণ সম্পন্ন হয়েছে ✓','ok');
+  }catch(err){
+    setLdr(false);
+    const em='❌ সংযোগ ব্যর্থ: '+err.message+'\n\n• GitHub Token সঠিক আছে কিনা চেক করুন\n• ইন্টারনেট সংযোগ দেখুন\n• ⚙️ Config থেকে Token আবার দিন';
+    document.getElementById('to0').textContent=em;
+    document.getElementById('to4').textContent=em;
+    toast(err.message,'err');
+  }
+}
+
+/* FOLLOW-UP */
+function showFQ(){
+  document.getElementById('ftxt').textContent=FQS[Math.floor(Math.random()*FQS.length)];
+  document.getElementById('fcard').classList.add('on');
+}
+async function sendFQ(){
+  const ans=document.getElementById('fans').value.trim();
+  if(!ans){toast('উত্তর লিখুন','w');return}
+  if(!C.apiKey){openMdl();return}
+  toast('AI প্রক্রিয়া করছে...','info');
+  try{
+    const res=await fetch(C.ep,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+C.apiKey},body:JSON.stringify({model:C.model,messages:[{role:'system',content:'সহানুভূতিশীল conflict resolver। সংক্ষিপ্ত বাংলায় উত্তর দাও।'},{role:'assistant',content:LR||'পূর্ববর্তী বিশ্লেষণ।'},{role:'user',content:'ফলো-আপ: '+ans+'\n\nএই তথ্যের ভিত্তিতে অতিরিক্ত পরামর্শ দাও।'}],max_tokens:600,temperature:.7})});
+    const d=await res.json();const t=d.choices?.[0]?.message?.content||'';
+    document.getElementById('ftxt').textContent=t;
+    document.getElementById('fans').value='';
+    toast('AI উত্তর পাঠিয়েছে ✓','ok');
+  }catch(e){toast('ব্যর্থ: '+e.message,'err')}
+}
+
+/* HISTORY */
+function saveHist(p1,p2){
+  const d=JSON.parse(localStorage.getItem('ov_h')||'[]');
+  d.unshift({p1,p2,date:new Date().toLocaleString('bn-BD')});
+  if(d.length>25)d.pop();
+  localStorage.setItem('ov_h',JSON.stringify(d));
+  renderHist();
+}
+function renderHist(){
+  const d=JSON.parse(localStorage.getItem('ov_h')||'[]');
+  const el=document.getElementById('hlist');
+  if(!d.length){el.innerHTML='<div class="hempty">✦ এখনো কোনো সেশন নেই ✦</div>';return}
+  el.innerHTML=d.map((h,i)=>`
+    <div class="hi" onclick="loadH(${i})">
+      <div class="hnum">${d.length-i}</div>
+      <div class="hprev">🧑 ${h.p1.substring(0,55)}${h.p1.length>55?'...':''}</div>
+      <div class="hmeta"><div class="htime">${h.date}</div><div class="hpill">লোড করুন</div></div>
+    </div>`).join('');
+}
+function loadH(i){
+  const d=JSON.parse(localStorage.getItem('ov_h')||'[]');
+  if(!d[i])return;
+  document.getElementById('p1').value=d[i].p1;
+  document.getElementById('p2').value=d[i].p2;
+  upCC(1);upCC(2);
+  window.scrollTo({top:0,behavior:'smooth'});
+  toast('সেশন লোড হয়েছে','ok');
+}
+function clrHist(){
+  if(!confirm('সব ইতিহাস মুছে ফেলবেন?'))return;
+  localStorage.removeItem('ov_h');renderHist();toast('ইতিহাস মুছে গেছে','info');
+}
+function expHist(){
+  const d=JSON.parse(localStorage.getItem('ov_h')||'[]');
+  if(!d.length){toast('ইতিহাস নেই','w');return}
+  const txt=d.map((h,i)=>`সেশন ${d.length-i} — ${h.date}\nব্যক্তি ১: ${h.p1}\nব্যক্তি ২: ${h.p2}\n${'─'.repeat(50)}`).join('\n\n');
+  const blob=new Blob([txt],{type:'text/plain;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='OvimanAi_History.txt';a.click();
+  URL.revokeObjectURL(url);toast('Export সম্পন্ন ✓','ok');
+}
+
+/* EXPORT */
+function cpRes(){if(!LR){toast('কিছু নেই','w');return}navigator.clipboard.writeText(LR).then(()=>toast('কপি হয়েছে ✓','ok')).catch(()=>toast('কপি ব্যর্থ','err'))}
+function dlRes(){
+  if(!LR){toast('কিছু নেই','w');return}
+  const blob=new Blob([LR],{type:'text/plain;charset=utf-8'});
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');
+  a.href=url;a.download=`OvimanAi_${Date.now()}.txt`;a.click();URL.revokeObjectURL(url);
+  toast('ডাউনলোড শুরু ✓','ok');
+}
+function shRes(){
+  if(!LR){toast('কিছু নেই','w');return}
+  if(navigator.share)navigator.share({title:'OvimanAi',text:LR.substring(0,300)+'...'}).catch(()=>{});
+  else toast('শেয়ার সাপোর্ট নেই','w');
+}
+function prRes(){
+  if(!LR){toast('কিছু নেই','w');return}
+  const w=window.open('','_blank');
+  w.document.write(`<html><head><meta charset="UTF-8"><title>OvimanAi</title><link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri&display=swap" rel="stylesheet"><style>body{font-family:'Hind Siliguri',sans-serif;padding:32px;line-height:1.8;color:#111}h1{color:#006;margin-bottom:4px}pre{white-space:pre-wrap;font-family:inherit}</style></head><body><h1>OvimanAi — কনফ্লিক্ট সমাধান</h1><p style="color:#888;font-size:.8rem">Developed by Humayun Shariar Himu | ${new Date().toLocaleString('bn-BD')}</p><pre>${LR}</pre></body></html>`);
+  w.document.close();setTimeout(()=>w.print(),600);
+}
+function resetAll(){
+  ['p1','p2'].forEach(id=>document.getElementById(id).value='');
+  upCC(1);upCC(2);
+  document.getElementById('rw').classList.remove('on');
+  document.getElementById('fcard').classList.remove('on');
+  document.getElementById('fans').value='';LR='';
+  window.scrollTo({top:0,behavior:'smooth'});
+  toast('নতুন সেশন শুরু হয়েছে','info');
+}
+
+/* KEYBOARD */
+document.addEventListener('keydown',e=>{
+  if((e.ctrlKey||e.metaKey)&&e.key==='Enter')solve();
+  if(e.key==='Escape')closeMdl();
+});
+
+loadC();renderHist();
+</script>
+</body>
+</html>
